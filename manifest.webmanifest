@@ -1,0 +1,12 @@
+{
+  "name": "Dream AI Studio",
+  "short_name": "Dream AI",
+  "description": "Private offline-first creative studio",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10101a",
+  "theme_color": "#10101a",
+  "orientation": "portrait",
+  "icons": []
+}

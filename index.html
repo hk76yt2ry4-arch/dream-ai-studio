@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10101a">
+  <meta name="description" content="Dream AI Studio — a private, offline-first creative studio.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <title>Dream AI Studio</title>
+  <style>
+    :root{color-scheme:dark;--bg:#10101a;--panel:#202033;--panel2:#28283e;--purple:#7046e8;--purple2:#a78bfa;--muted:#aaaabb;--line:#343449}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,input,textarea,select{font:inherit} button{cursor:pointer}
+    .app{max-width:760px;margin:auto;min-height:100dvh;padding:env(safe-area-inset-top) 18px calc(92px + env(safe-area-inset-bottom))}
+    header{display:flex;align-items:center;justify-content:space-between;padding:22px 2px 24px}
+    .brand{font-size:25px;font-weight:800;letter-spacing:-.6px}.tag{color:var(--muted);font-size:13px;margin-top:5px}
+    .status{font-size:11px;color:#b7f7cd;border:1px solid #27633d;border-radius:99px;padding:7px 10px;white-space:nowrap}
+    .hero{background:linear-gradient(135deg,#5839bd,#352477);padding:25px;border-radius:23px;margin-bottom:27px}
+    .hero h1{font-size:26px;margin:0 0 9px}.hero p{color:#e4dcff;margin:0;line-height:1.5}
+    h2{font-size:21px;margin:25px 0 14px} h3{font-size:17px;margin:0 0 10px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .tile{border:1px solid transparent;background:var(--panel);border-radius:18px;padding:19px 15px;min-height:116px;text-align:left;color:white}
+    .tile:active,.nav button:active{transform:scale(.98)} .emoji{font-size:27px;display:block;margin-bottom:12px}.tile strong{font-size:15px}.tile small{display:block;color:var(--muted);margin-top:5px}
+    .panel{background:var(--panel);border-radius:18px;padding:18px;margin:14px 0}
+    label{display:block;font-weight:700;margin:17px 0 9px}
+    textarea,input,select{width:100%;background:#171725;color:#fff;border:1px solid var(--line);border-radius:13px;padding:14px;outline:none}
+    textarea{min-height:118px;resize:vertical} textarea:focus,input:focus,select:focus{border-color:var(--purple2)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#29293f;color:#fff;border:1px solid transparent;border-radius:12px;padding:11px 13px}.chip.active{background:#5839bd;border-color:var(--purple2)}
+    .primary{background:var(--purple);border:0;border-radius:14px;color:white;font-weight:800;padding:16px;width:100%;margin-top:22px}
+    .secondary{background:#303047;border:1px solid var(--line);border-radius:12px;color:white;padding:11px 14px}
+    .muted{color:var(--muted);line-height:1.5}.notice{font-size:13px;color:#c9c3dc;line-height:1.5;margin-top:13px}
+    .nav{position:fixed;bottom:0;left:0;right:0;background:#171724ed;backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:9px 8px calc(9px + env(safe-area-inset-bottom));display:flex;justify-content:space-around;z-index:5}
+    .nav button{background:none;border:0;color:#aaaabb;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 10px}.nav button b{font-size:20px}.nav button.active{color:#c4afff}
+    .screen{display:none}.screen.active{display:block}
+    .message{padding:12px 14px;border-radius:14px;margin:9px 0;max-width:90%;white-space:pre-wrap;line-height:1.45}.bot{background:#29293f}.user{background:#5839bd;margin-left:auto}
+    .row{display:flex;gap:8px;align-items:center}.row input{flex:1;min-width:0}
+    .empty{border:1px dashed #45455d;border-radius:15px;padding:22px;text-align:center;color:var(--muted)}
+    .saved{background:#24243a;border-radius:12px;padding:12px;margin:8px 0;overflow-wrap:anywhere}
+    .preview{width:100%;border-radius:14px;margin-top:12px}
+    .small{font-size:12px;color:var(--muted)}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div><div class="brand">✨ Dream AI Studio</div><div class="tag">Your private creative space</div></div>
+    <div class="status" id="connection">Checking offline status…</div>
+  </header>
+
+  <main>
+    <section class="screen active" id="home">
+      <div class="hero"><h1>Create something amazing</h1><p>Explore your ideas, save your creations and keep your workspace on your iPhone.</p></div>
+      <h2>Explore AI Features</h2>
+      <div class="grid">
+        <button class="tile" data-go="images"><span class="emoji">🎨</span><strong>AI Image Generator</strong><small>Prepare image prompts</small></button>
+        <button class="tile" data-go="companion"><span class="emoji">💬</span><strong>AI Companion</strong><small>Private chat workspace</small></button>
+        <button class="tile" data-go="gallery"><span class="emoji">🖼️</span><strong>My Gallery</strong><small>Saved prompts and images</small></button>
+        <button class="tile" data-go="settings"><span class="emoji">⚙️</span><strong>Settings</strong><small>Offline and storage info</small></button>
+      </div>
+      <div class="panel"><h3>Offline-first mode</h3><p class="muted">The app interface and saved text can work offline. Local AI models are not installed in this starter version; we'll add a compatible on-device model in the next stage.</p></div>
+    </section>
+
+    <section class="screen" id="images">
+      <h2>🎨 AI Image Generator</h2><p class="muted">Write and save a detailed image prompt. Actual image generation will be added after we test a model that runs on your iPhone.</p>
+      <label for="prompt">Describe your image</label>
+      <textarea id="prompt" placeholder="A cinematic mountain lake at sunrise, realistic photography, soft golden light…"></textarea>
+      <label>Choose style</label>
+      <div class="chips" id="styles">
+        <button class="chip active">Realistic</button><button class="chip">Anime</button><button class="chip">3D</button><button class="chip">Fantasy</button><button class="chip">Cinematic</button><button class="chip">Painting</button>
+      </div>
+      <label>Image format</label>
+      <div class="chips" id="sizes">
+        <button class="chip">Square</button><button class="chip active">Portrait</button><button class="chip">Landscape</button>
+      </div>
+      <button class="primary" id="savePrompt">Save Image Prompt</button>
+      <p class="notice" id="imageNotice">This saves your prompt on this device. It does not generate an image yet.</p>
+    </section>
+
+    <section class="screen" id="companion">
+      <h2>💬 AI Companion</h2><p class="muted">Your private chat space. A local language model still needs to be added before this can answer intelligently.</p>
+      <div class="panel" id="chatLog"><div class="message bot">Welcome to Dream AI Studio. Your chat screen is ready. The offline AI model is not installed yet.</div></div>
+      <div class="row"><input id="chatInput" placeholder="Write a message…" autocomplete="off"><button class="secondary" id="sendChat">Send</button></div>
+      <p class="notice">Messages are stored locally in this browser on this device. No message is sent to an AI service.</p>
+      <button class="secondary" id="clearChat">Clear chat</button>
+    </section>
+
+    <section class="screen" id="gallery">
+      <h2>🖼️ My Gallery</h2><p class="muted">Your saved prompts and local items.</p>
+      <div id="galleryItems" class="empty">No saved prompts yet. Save one from Image Generator.</div>
+      <button class="secondary" id="exportData">Export saved data</button>
+    </section>
+
+    <section class="screen" id="settings">
+      <h2>⚙️ Settings</h2>
+      <div class="panel"><h3>App status</h3><p class="muted" id="offlineInfo">Checking service worker…</p><p class="muted">App shell: offline-ready after the first successful visit and cache. AI model: not installed. Internet is needed to publish/update the app and download future model files.</p></div>
+      <div class="panel"><h3>Privacy</h3><p class="muted">This starter stores chat text and saved prompts in local browser storage. Clearing Safari website data may erase them. Avoid saving sensitive information.</p></div>
+      <button class="secondary" id="clearAll">Delete local app data</button>
+    </section>
+  </main>
+</div>
+
+<nav class="nav">
+  <button class="active" data-go="home"><b>⌂</b>Home</button>
+  <button data-go="images"><b>🎨</b>Images</button>
+  <button data-go="companion"><b>💬</b>Chat</button>
+  <button data-go="gallery"><b>▧</b>Gallery</button>
+</nav>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const screens = [...document.querySelectorAll('.screen')];
+  function go(name){
+    screens.forEach(s=>s.classList.toggle('active',s.id===name));
+    document.querySelectorAll('[data-go]').forEach(b=>b.classList.toggle('active',b.dataset.go===name));
+    window.scrollTo(0,0);
+    if(name==='gallery') renderGallery();
+    if(name==='companion') renderChat();
+  }
+  document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+  function choose(group){
+    $(group).querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+      $(group).querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); b.classList.add('active');
+    }));
+  }
+  choose('styles'); choose('sizes');
+  const get = key => {try{return JSON.parse(localStorage.getItem(key)||'[]')}catch(e){return []}};
+  const put = (key,val) => localStorage.setItem(key,JSON.stringify(val));
+  $('savePrompt').addEventListener('click',()=>{
+    const text=$('prompt').value.trim(); if(!text){$('imageNotice').textContent='Please enter an image description first.';return;}
+    const style=$('styles').querySelector('.active')?.textContent||'Realistic';
+    const size=$('sizes').querySelector('.active')?.textContent||'Portrait';
+    const items=get('dream_gallery'); items.unshift({text,style,size,date:new Date().toLocaleString()}); put('dream_gallery',items);
+    $('imageNotice').textContent='Prompt saved on this iPhone. Image generation is not connected yet.';
+  });
+  function renderGallery(){
+    const items=get('dream_gallery'); const box=$('galleryItems');
+    if(!items.length){box.className='empty';box.textContent='No saved prompts yet. Save one from Image Generator.';return;}
+    box.className='';
+    box.innerHTML=items.map((x,i)=>`<div class="saved"><strong>${escapeHtml(x.style)} · ${escapeHtml(x.size)}</strong><p>${escapeHtml(x.text)}</p><span class="small">${escapeHtml(x.date)}</span> <button class="secondary" data-delete="${i}">Delete</button></div>`).join('');
+    box.querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>{const a=get('dream_gallery');a.splice(+b.dataset.delete,1);put('dream_gallery',a);renderGallery();}));
+  }
+  function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function renderChat(){
+    const log=$('chatLog'), msgs=get('dream_chat');
+    log.innerHTML='<div class="message bot">Welcome to Dream AI Studio. Your chat screen is ready. The offline AI model is not installed yet.</div>'+msgs.map(m=>`<div class="message ${m.role==='user'?'user':'bot'}">${escapeHtml(m.text)}</div>`).join('');
+  }
+  $('sendChat').addEventListener('click',()=>{
+    const t=$('chatInput').value.trim();if(!t)return;
+    const a=get('dream_chat');a.push({role:'user',text:t});put('dream_chat',a);$('chatInput').value='';renderChat();
+    const note=document.createElement('div');note.className='message bot';note.textContent='Saved locally. To receive AI replies, we still need to install and connect an on-device language model.';$('chatLog').appendChild(note);
+  });
+  $('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('sendChat').click();});
+  $('clearChat').addEventListener('click',()=>{localStorage.removeItem('dream_chat');renderChat();});
+  $('exportData').addEventListener('click',()=>{
+    const data={gallery:get('dream_gallery'),chat:get('dream_chat')};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='dream-ai-studio-data.json';a.click();URL.revokeObjectURL(url);
+  });
+  $('clearAll').addEventListener('click',()=>{if(confirm('Delete all Dream AI Studio prompts and chat stored in this browser?')){localStorage.removeItem('dream_gallery');localStorage.removeItem('dream_chat');renderGallery();renderChat();}});
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('./sw.js').then(()=>{$('offlineInfo').textContent='Service worker registered. App files will be cached for offline use.';}).catch(()=>{$('offlineInfo').textContent='Service worker could not register in this preview. It requires HTTPS hosting.';});
+  }
+  function online(){ $('connection').textContent=navigator.onLine?'Online · offline cache ready':'Offline mode'; }
+  window.addEventListener('online',online);window.addEventListener('offline',online);online();
+})();
+</script>
+</body>
+</html>
